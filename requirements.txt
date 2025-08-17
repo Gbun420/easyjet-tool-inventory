@@ -1,18 +1,16 @@
-# Basic data-science stack
+# Core data & ML stack
 pandas==2.3.1
 numpy==1.26.4
-
-# QR-code & image handling
-qrcode==8.2
-pillow==11.3.0
-
-# Machine-learning / model persistence
 scikit-learn==1.7.1
 joblib==1.5.1
 
-# Streamlit + charting
+# QR-code & image generation
+qrcode==8.2
+pillow==11.3.0
+
+# Dashboard & charts
 streamlit==1.48.1
 altair==5.5.0
 
-# (Optional, but handy for pandas’ datetime support)
+# Optional but handy for pandas datetimes
 pytz==2025.2
