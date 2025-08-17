@@ -1,0 +1,308 @@
+/* Custom CSS for EasyJet Tool Inventory System */
+
+/* EasyJet Brand Colors */
+:root {
+    --easyjet-orange: #ff6900;
+    --easyjet-dark-orange: #e55a00;
+    --easyjet-gray: #666666;
+    --easyjet-light-gray: #f5f5f5;
+    --success-green: #28a745;
+    --warning-yellow: #ffc107;
+    --danger-red: #dc3545;
+    --info-blue: #17a2b8;
+}
+
+/* Main header styling */
+.main-header {
+    background: linear-gradient(135deg, var(--easyjet-orange) 0%, var(--easyjet-dark-orange) 100%);
+    color: white;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.main-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.main-header p {
+    margin: 0.5rem 0 0 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Metric cards */
+.metric-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 5px solid var(--easyjet-orange);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--easyjet-orange);
+    margin-bottom: 0.5rem;
+}
+
+.metric-label {
+    font-size: 1rem;
+    color: var(--easyjet-gray);
+    font-weight: 500;
+}
+
+/* Tool status indicators */
+.status-available {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.status-in-use {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.status-maintenance {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+/* Tool cards */
+.tool-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.tool-card:hover {
+    border-color: var(--easyjet-orange);
+    box-shadow: 0 4px 15px rgba(255, 105, 0, 0.2);
+    transform: translateY(-1px);
+}
+
+.tool-card h4 {
+    color: var(--easyjet-orange);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.tool-card p {
+    margin: 0.5rem 0;
+    color: var(--easyjet-gray);
+}
+
+.tool-card strong {
+    color: #333;
+}
+
+/* Urgent maintenance cards */
+.urgent-maintenance {
+    background-color: #fff5f5;
+    border-color: var(--danger-red);
+    border-left: 5px solid var(--danger-red);
+}
+
+.urgent-maintenance h4 {
+    color: var(--danger-red);
+}
+
+/* Warning maintenance cards */
+.warning-maintenance {
+    background-color: #fffbf0;
+    border-color: var(--warning-yellow);
+    border-left: 5px solid var(--warning-yellow);
+}
+
+/* QR code styling */
+.qr-code-container {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 1rem 0;
+}
+
+.qr-code-container img {
+    border: 2px solid var(--easyjet-gray);
+    border-radius: 8px;
+    padding: 10px;
+    background: white;
+}
+
+/* Navigation sidebar customization */
+.css-1d391kg {
+    background-color: var(--easyjet-light-gray);
+}
+
+/* Button styling */
+.stButton > button {
+    background-color: var(--easyjet-orange);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.stButton > button:hover {
+    background-color: var(--easyjet-dark-orange);
+    border: none;
+}
+
+/* Form styling */
+.stTextInput > div > div > input {
+    border-radius: 6px;
+    border: 2px solid #e0e0e0;
+    padding: 0.5rem;
+}
+
+.stTextInput > div > div > input:focus {
+    border-color: var(--easyjet-orange);
+    box-shadow: 0 0 0 2px rgba(255, 105, 0, 0.2);
+}
+
+.stSelectbox > div > div > div {
+    border-radius: 6px;
+    border: 2px solid #e0e0e0;
+}
+
+/* Alert styling */
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+}
+
+/* Tables */
+.dataframe {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dataframe th {
+    background-color: var(--easyjet-orange);
+    color: white;
+    font-weight: bold;
+}
+
+.dataframe td {
+    padding: 0.75rem;
+}
+
+.dataframe tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.dataframe tr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--easyjet-orange);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 1rem;
+    }
+    
+    .main-header h1 {
+        font-size: 2rem;
+    }
+    
+    .tool-card {
+        padding: 1rem;
+    }
+    
+    .metric-card {
+        padding: 1rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .main-header {
+        background: none !important;
+        color: black !important;
+        text-shadow: none !important;
+    }
+    
+    .tool-card, .metric-card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+    }
+}
