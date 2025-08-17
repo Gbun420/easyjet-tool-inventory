@@ -22,26 +22,40 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- User Authentication ---
-# Load secrets/config from the .streamlit folder
+# ---------- 1️⃣ Load secrets ----------
 config_path = Path(__file__).parent / ".streamlit" / "secrets.toml"
 
 with config_path.open() as f:
-    config = yaml.safe_load(f.read())
+    cfg = yaml.safe_load(f.read())
 
+# ---------- 2️⃣ Prepare the credentials dict ----------
+credentials = {
+    "usernames": {
+        user: {"password": pwd}
+        for user, pwd in cfg["auth"]["usernames"].items()
+    }
+}
+
+# ---------- 3️⃣ Instantiate the authenticator ----------
 authenticator = stauth.Authenticate(
-    config["auth"]["usernames"]   # user dict
+    credentials=credentials,
+    cookie_name=cfg["auth"]["cookie_name"],
+    cookie_key=cfg["auth"]["cookie_key"],
+    cookie_expiry_days=cfg["auth"]["cookie_expiry"]
 )
 
-name, authentication_status, username = authenticator.login(
-    "Login", "sidebar"
-)
+# ---------- 4️⃣ Login / Logout ----------
+name, authentication_status, username = authenticator.login("Login", "sidebar")
 
 if not authentication_status:
-    st.warning("Incorrect username/password")
+    st.warning("Incorrect username / password")
     st.stop()
 
-# --- Main App ---
+# Optional: a logout button (appears after login)
+if authentication_status:
+    authenticator.logout("Logout", "sidebar")
+
+# ---------- 5️⃣ Main UI ----------
 st.title(f"Welcome, {name}!")
 
 # --- Load Data ---
