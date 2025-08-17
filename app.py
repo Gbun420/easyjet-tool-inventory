@@ -1,14 +1,6 @@
 import streamlit as st
-import pandas as pd
-import os
-import sys
-from datetime import datetime
 import streamlit_authenticator as stauth
-
-# --- Add the project root to the Python path ---
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(PROJECT_ROOT)
-
+from pathlib import Path
 from scripts.inventory_management import read_inventory
 from models.predictive_model import predict_usage
 from logs.audit import read_audit_log
@@ -21,17 +13,16 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---------- User Authentication ----------
-credentials = st.secrets["auth"]["usernames"]
-cookie_name = st.secrets["auth"]["cookie_name"]
-cookie_key = st.secrets["auth"]["cookie_key"]
-cookie_expiry_days = st.secrets["auth"]["cookie_expiry"]
+# ──────────────────────── Authenticator  ────────────────────────
+# Build a credentials dict that stauth expects
+usernames = st.secrets["auth"]["usernames"]
+credentials = {"usernames": {u: {"password": pwd} for u, pwd in usernames.items()}}
 
 authenticator = stauth.Authenticate(
-    credentials=credentials,
-    cookie_name=cookie_name,
-    cookie_key=cookie_key,
-    cookie_expiry_days=cookie_expiry_days
+    credentials,
+    st.secrets["auth"]["cookie_name"],
+    st.secrets["auth"]["cookie_key"],
+    st.secrets["auth"]["cookie_expiry_days"]
 )
 
 name, authentication_status, username = authenticator.login("Login", "sidebar")
@@ -40,14 +31,9 @@ if not authentication_status:
     st.warning("Incorrect username / password")
     st.stop()
 
-# Optional: a logout button (appears after login)
-if authentication_status:
-    authenticator.logout("Logout", "sidebar")
-
-# ---------- Main UI ----------
 st.title(f"Welcome, {name}!")
 
-# --- Load Data ---
+# ──────────────────────── Dashboard  ────────────────────────
 @st.cache_data
 def load_data():
     df = read_inventory()
@@ -138,7 +124,7 @@ st.sidebar.header("⚠️ Alerts")
 
     # High-Demand Tools
     st.sidebar.subheader("High-Demand Tools (Usage > 40)")
-    high_demand_tools = inventory_df[inventory_df['Usage_Frequency'] > 40]
+high_demand_tools = inventory_df[inventory_df['Usage_Frequency'] > 40]
     if not high_demand_tools.empty:
         st.sidebar.table(high_demand_tools[['Tool_ID', 'Box_Name', 'Usage_Frequency']])
     else:
