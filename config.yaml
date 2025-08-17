@@ -1,0 +1,17 @@
+credentials:
+  usernames:
+    jsmith:
+      email: jsmith@example.com
+      name: John Smith
+      password: '$2a$10$E/h9jBCd5K/a5.0.3.0.DOu05zB.O/j.m.m.j.m.m.j.m.m.j.m.m'
+    rdoe:
+      email: rdoe@example.com
+      name: Rebecca Doe
+      password: '$2a$10$E/h9jBCd5K/a5.0.3.0.DOu05zB.O/j.m.m.j.m.m.j.m.m.j.m.m'
+cookie:
+  expiry_days: 30
+  key: "a_random_secret_key"
+  name: some_cookie_name
+preauthorized:
+  emails:
+  - melsby@example.com
