@@ -1,0 +1,11 @@
+Tool_ID,Box_Name,Location,Checked_Out_By,Last_Calibration,Next_Maintenance,Usage_Frequency
+T001,Box-A-01,Hangar 1,None,2025-01-15,2025-07-15,25
+T002,Box-A-02,Hangar 1,None,2025-02-20,2025-08-20,15
+T003,Box-B-01,Hangar 2,John Doe,2025-03-10,2025-09-10,40
+T004,Box-B-02,Hangar 2,None,2025-04-05,2025-10-05,30
+T005,Box-C-01,Hangar 1,Jane Smith,2025-05-12,2025-11-12,50
+T006,Box-C-02,Hangar 3,None,2025-06-18,2025-12-18,22
+T007,Box-D-01,Hangar 2,None,2025-07-25,2026-01-25,10
+T008,Box-D-02,Hangar 3,Sam Wilson,2025-08-30,2026-02-28,5
+T009,Box-E-01,Hangar 1,None,2025-09-09,2026-03-09,35
+T010,Box-E-02,Hangar 2,None,2025-10-14,2026-04-14,45
