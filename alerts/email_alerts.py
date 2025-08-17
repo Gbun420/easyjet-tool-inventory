@@ -5,6 +5,7 @@ import os
 import sys
 import pandas as pd
 from datetime import datetime, timedelta
+import streamlit as st
 
 # --- Add the project root to the Python path ---
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,12 +13,12 @@ sys.path.append(PROJECT_ROOT)
 
 from scripts.inventory_management import read_inventory
 
-# --- Email Configuration (Replace with your credentials) ---
-SMTP_SERVER = 'smtp.gmail.com'
-SMTP_PORT = 587
-EMAIL_SENDER = 'your_email@gmail.com'
-EMAIL_PASSWORD = 'your_app_password'  # Use an app-specific password for security
-EMAIL_RECIPIENT = 'recipient_email@example.com'
+# --- Email Configuration (from Streamlit Secrets) ---
+SMTP_SERVER = st.secrets.get("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = st.secrets.get("SMTP_PORT", 587)
+EMAIL_SENDER = st.secrets.get("EMAIL_SENDER", "your_email@gmail.com")
+EMAIL_PASSWORD = st.secrets.get("EMAIL_PASSWORD", "your_app_password")
+EMAIL_RECIPIENT = st.secrets.get("EMAIL_RECIPIENT", "recipient_email@example.com")
 
 # --- Alert Thresholds ---
 CALIBRATION_WARNING_DAYS = 30
@@ -36,7 +37,7 @@ def send_email(subject, body):
         print(f"Subject: {subject}")
         print(f"Body: {body}")
         print("--- END EMAIL SIMULATION ---")
-        print("\nNOTE: To send actual emails, configure your credentials in alerts/email_alerts.py")
+        print("\nNOTE: To send actual emails, configure your credentials in .streamlit/secrets.toml")
         return
 
     try:
