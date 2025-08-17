@@ -96,7 +96,7 @@ with tab1:
     df_filtered = inventory_df[inventory_df['Location'].isin(location_filter)]
     if status_filter == 'Available':
         df_filtered = df_filtered[df_filtered['Checked_Out_By'] == 'None']
-elif status_filter == 'Checked Out':
+    elif status_filter == 'Checked Out':
         df_filtered = df_filtered[df_filtered['Checked_Out_By'] != 'None']
 
     # --- Main Content ---
