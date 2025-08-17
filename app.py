@@ -1,6 +1,14 @@
 import streamlit as st
+import pandas as pd
+import os
+import sys
+from datetime import datetime
 import streamlit_authenticator as stauth
-from pathlib import Path
+
+# --- Add the project root to the Python path ---
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(PROJECT_ROOT)
+
 from scripts.inventory_management import read_inventory
 from models.predictive_model import predict_usage
 from logs.audit import read_audit_log
@@ -31,6 +39,11 @@ if not authentication_status:
     st.warning("Incorrect username / password")
     st.stop()
 
+# Optional: a logout button (appears after login)
+if authentication_status:
+    authenticator.logout("Logout", "sidebar")
+
+# ---------- Main UI ----------
 st.title(f"Welcome, {name}!")
 
 # ──────────────────────── Dashboard  ────────────────────────
@@ -120,7 +133,7 @@ with tab1:
 
     # --- Missing & High-Demand Tools ---
     st.sidebar.markdown("---" )
-st.sidebar.header("⚠️ Alerts")
+    st.sidebar.header("⚠️ Alerts")
 
     # High-Demand Tools
     st.sidebar.subheader("High-Demand Tools (Usage > 40)")
@@ -140,7 +153,7 @@ high_demand_tools = inventory_df[inventory_df['Usage_Frequency'] > 40]
 
     # --- How to Use ---
     st.sidebar.markdown("---" )
-st.sidebar.info(
+    st.sidebar.info(
         "**How to use this dashboard:**\n"
         "- Use the filters to narrow down the inventory view.\n"
         "- Rows in **orange** indicate upcoming calibration.\n"
