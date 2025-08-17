@@ -4,8 +4,6 @@ import os
 import sys
 from datetime import datetime
 import streamlit_authenticator as stauth
-import yaml
-from pathlib import Path
 
 # --- Add the project root to the Python path ---
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -22,29 +20,19 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---------- 1️⃣ Load secrets ----------
-config_path = Path(__file__).parent / ".streamlit" / "secrets.toml"
+# ---------- User Authentication ----------
+credentials = st.secrets["auth"]["usernames"]
+cookie_name = st.secrets["auth"]["cookie_name"]
+cookie_key = st.secrets["auth"]["cookie_key"]
+cookie_expiry_days = st.secrets["auth"]["cookie_expiry"]
 
-with config_path.open() as f:
-    cfg = yaml.safe_load(f.read())
-
-# ---------- 2️⃣ Prepare the credentials dict ----------
-credentials = {
-    "usernames": {
-        user: {"password": pwd}
-        for user, pwd in cfg["auth"]["usernames"].items()
-    }
-}
-
-# ---------- 3️⃣ Instantiate the authenticator ----------
 authenticator = stauth.Authenticate(
     credentials=credentials,
-    cookie_name=cfg["auth"]["cookie_name"],
-    cookie_key=cfg["auth"]["cookie_key"],
-    cookie_expiry_days=cfg["auth"]["cookie_expiry"]
+    cookie_name=cookie_name,
+    cookie_key=cookie_key,
+    cookie_expiry_days=cookie_expiry_days
 )
 
-# ---------- 4️⃣ Login / Logout ----------
 name, authentication_status, username = authenticator.login("Login", "sidebar")
 
 if not authentication_status:
@@ -55,7 +43,7 @@ if not authentication_status:
 if authentication_status:
     authenticator.logout("Logout", "sidebar")
 
-# ---------- 5️⃣ Main UI ----------
+# ---------- Main UI ----------
 st.title(f"Welcome, {name}!")
 
 # --- Load Data ---
