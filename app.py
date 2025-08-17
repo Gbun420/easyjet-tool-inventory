@@ -11,6 +11,7 @@ sys.path.append(PROJECT_ROOT)
 
 from scripts.inventory_management import read_inventory
 from models.predictive_model import predict_usage
+from logs.audit import read_audit_log
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -73,87 +74,105 @@ def get_row_style(row):
 st.title("✈️ EasyJet Engineering Malta – Tool Inventory Dashboard")
 st.markdown("**Real-time tracking and predictive insights for tool management.**")
 
-# --- Sidebar ---
-st.sidebar.header("Filters & Actions")
+tab1, tab2 = st.tabs(["Inventory & Analytics", "Audit Log"])
 
-# Location Filter
-location_filter = st.sidebar.multiselect(
-    'Filter by Location:',
-    options=inventory_df['Location'].unique(),
-    default=inventory_df['Location'].unique()
-)
+with tab1:
+    # --- Sidebar ---
+    st.sidebar.header("Filters & Actions")
 
-# Status Filter
-status_filter = st.sidebar.selectbox(
-    'Filter by Status:',
-    options=['All', 'Available', 'Checked Out']
-)
+    # Location Filter
+    location_filter = st.sidebar.multiselect(
+        'Filter by Location:',
+        options=inventory_df['Location'].unique(),
+        default=inventory_df['Location'].unique()
+    )
 
-# Filtered DataFrame
-df_filtered = inventory_df[inventory_df['Location'].isin(location_filter)]
-if status_filter == 'Available':
-    df_filtered = df_filtered[df_filtered['Checked_Out_By'] == 'None']
-elif status_filter == 'Checked Out':
-    df_filtered = df_filtered[df_filtered['Checked_Out_By'] != 'None']
+    # Status Filter
+    status_filter = st.sidebar.selectbox(
+        'Filter by Status:',
+        options=['All', 'Available', 'Checked Out']
+    )
 
-# --- Main Content ---
+    # Filtered DataFrame
+    df_filtered = inventory_df[inventory_df['Location'].isin(location_filter)]
+    if status_filter == 'Available':
+        df_filtered = df_filtered[df_filtered['Checked_Out_By'] == 'None']
+    elif status_filter == 'Checked Out':
+        df_filtered = df_filtered[df_filtered['Checked_Out_By'] != 'None']
 
-# Key Metrics
-col1, col2, col3 = st.columns(3)
-col1.metric("Total Tools", f"{len(df_filtered)}")
-col2.metric("Tools Checked Out", f"{len(df_filtered[df_filtered['Checked_Out_By'] != 'None'])}")
-col3.metric("Calibration Due Soon", f"{len(df_filtered[df_filtered['Next_Maintenance'] < datetime.now() + pd.Timedelta(days=30)])}")
+    # --- Main Content ---
 
-st.markdown("### Full Inventory Details")
+    # Key Metrics
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Total Tools", f"{len(df_filtered)}")
+    col2.metric("Tools Checked Out", f"{len(df_filtered[df_filtered['Checked_Out_By'] != 'None'])}")
+    col3.metric("Calibration Due Soon", f"{len(df_filtered[df_filtered['Next_Maintenance'] < datetime.now() + pd.Timedelta(days=30)])}")
 
-# Display stylized dataframe
-st.dataframe(
-    df_filtered.style.apply(get_row_style, axis=1),
-    height=500,
-    use_container_width=True
-)
+    st.markdown("### Full Inventory Details")
 
-# --- Charts & Predictions ---
-st.markdown("### Analytics & Predictions")
+    # Display stylized dataframe
+    st.dataframe(
+        df_filtered.style.apply(get_row_style, axis=1),
+        height=500,
+        use_container_width=True
+    )
 
-col1, col2 = st.columns(2)
+    # --- Charts & Predictions ---
+    st.markdown("### Analytics & Predictions")
 
-with col1:
-    st.subheader("Tool Distribution by Location")
-    location_counts = df_filtered['Location'].value_counts()
-    st.bar_chart(location_counts)
+    col1, col2 = st.columns(2)
 
-with col2:
-    st.subheader("Usage Frequency Distribution")
-    usage_counts = df_filtered['Usage_Frequency'].value_counts()
-    st.area_chart(usage_counts)
+    with col1:
+        st.subheader("Tool Distribution by Location")
+        location_counts = df_filtered['Location'].value_counts()
+        st.bar_chart(location_counts)
 
-# --- Missing & High-Demand Tools ---
-st.sidebar.markdown("---" )
+    with col2:
+        st.subheader("Usage Frequency Distribution")
+        usage_counts = df_filtered['Usage_Frequency'].value_counts()
+        st.area_chart(usage_counts)
+
+    # --- Missing & High-Demand Tools ---
+    st.sidebar.markdown("---" )
 st.sidebar.header("⚠️ Alerts")
 
-# High-Demand Tools
-st.sidebar.subheader("High-Demand Tools (Usage > 40)")
-high_demand_tools = inventory_df[inventory_df['Usage_Frequency'] > 40]
-if not high_demand_tools.empty:
-    st.sidebar.table(high_demand_tools[['Tool_ID', 'Box_Name', 'Usage_Frequency']])
-else:
-    st.sidebar.info("No high-demand tools at the moment.")
+    # High-Demand Tools
+    st.sidebar.subheader("High-Demand Tools (Usage > 40)")
+    high_demand_tools = inventory_df[inventory_df['Usage_Frequency'] > 40]
+    if not high_demand_tools.empty:
+        st.sidebar.table(high_demand_tools[['Tool_ID', 'Box_Name', 'Usage_Frequency']])
+    else:
+        st.sidebar.info("No high-demand tools at the moment.")
 
-# Missing Tools
-st.sidebar.subheader("Checked Out / Missing Tools")
-missing_tools = inventory_df[inventory_df['Checked_Out_By'] != 'None']
-if not missing_tools.empty:
-    st.sidebar.table(missing_tools[['Tool_ID', 'Box_Name', 'Checked_Out_By']])
-else:
-    st.sidebar.info("All tools are currently checked in.")
+    # Missing Tools
+    st.sidebar.subheader("Checked Out / Missing Tools")
+    missing_tools = inventory_df[inventory_df['Checked_Out_By'] != 'None']
+    if not missing_tools.empty:
+        st.sidebar.table(missing_tools[['Tool_ID', 'Box_Name', 'Checked_Out_By']])
+    else:
+        st.sidebar.info("All tools are currently checked in.")
 
-# --- How to Use ---
-st.sidebar.markdown("---" )
+    # --- How to Use ---
+    st.sidebar.markdown("---" )
 st.sidebar.info(
-    "**How to use this dashboard:**\n"
-    "- Use the filters to narrow down the inventory view.\n"
-    "- Rows in **orange** indicate upcoming calibration.\n"
-    "- Text in **red** signifies a high-demand tool.\n"
-    "- *Italicized* rows show tools that are currently checked out."
-)
+        "**How to use this dashboard:**\n"
+        "- Use the filters to narrow down the inventory view.\n"
+        "- Rows in **orange** indicate upcoming calibration.\n"
+        "- Text in **red** signifies a high-demand tool.\n"
+        "- *Italicized* rows show tools that are currently checked out."
+    )
+
+with tab2:
+    st.header("Audit Log")
+    audit_df = read_audit_log()
+    st.dataframe(audit_df, use_container_width=True)
+
+    # Add a CSV download button
+    if not audit_df.empty:
+        csv = audit_df.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="Download Audit Log as CSV",
+            data=csv,
+            file_name="audit_log.csv",
+            mime="text/csv",
+        )
